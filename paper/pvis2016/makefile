@@ -4,7 +4,7 @@
 # versions at:
 # http://tadek.pietraszek.org/blog/2006/03/24/the-ultimate-latex-makefile/
 # (c) by Tadeusz Pietraszek
-# http://www.acoustics.hut.fi/u/mairas/UltimateLatexMakefile/ 
+# http://www.acoustics.hut.fi/u/mairas/UltimateLatexMakefile/
 # (c) by Matti Airas
 #
 # Call 'make dvi' for minimal compilation, to check for proper latex
@@ -15,10 +15,11 @@
 #adjust the following for your purpose
 
 #set the a .dvi name that corresponds to your main .tex file
-DVIFILES = template.dvi
+DOCUMENT = draft
+DVIFILES = $(DOCUMENT).dvi
 MAINTEXFILE = $(DVIFILES:.dvi=.tex)
-SUBTEXFILES = 
-BIBFILES = template.bib
+SUBTEXFILES =
+BIBFILES = $(DOCUMENT).bib
 
 #switch = to # when using ps2pdf in win32 (mingw/msys), i.e. uncomment 2nd line
 #E=\=
@@ -37,19 +38,19 @@ LATEX = latex
 BIBTEX = bibtex
 L2H = latex2html
 PDFLATEX = ps2pdf
-DVIPS = dvips 
+DVIPS = dvips
 
 RERUN = "(There were undefined references|Rerun to get (cross-references|the bars) right)"
-RERUNBIB = "No file.*\.bbl|Citation.*undefined" 
+RERUNBIB = "No file.*\.bbl|Citation.*undefined"
 
-PSFILES  = $(DVIFILES:.dvi=.ps) 
+PSFILES  = $(DVIFILES:.dvi=.ps)
 
-PDFFILES7 = $(DVIFILES:.dvi=.pdf7) 
-PDFFILES8 = $(DVIFILES:.dvi=.pdf8) 
+PDFFILES7 = $(DVIFILES:.dvi=.pdf7)
+PDFFILES8 = $(DVIFILES:.dvi=.pdf8)
 
-COPY = if test -r $*.toc; then cp $*.toc $*.toc.bak; fi 
-#RM = /usr/bin/rm -f 
-RM = rm -f 
+COPY = if test -r $*.toc; then cp $*.toc $*.toc.bak; fi
+#RM = /usr/bin/rm -f
+RM = rm -f
 
 all:	msg gs8
 
@@ -100,7 +101,7 @@ $(MAINTEXFILE) : $(SUBTEXFILES) $(BIBFILES)
 	"-dColorImageFilter$E/FlateEncode" \
 	"-dGrayImageFilter$E/FlateEncode" \
 	"-dMonoImageFilter$E/FlateEncode" \
-	$< template.pdf
+	$< $(DOCUMENT).pdf
 
 #				$(PDFLATEX) $<
 
@@ -116,12 +117,12 @@ $(MAINTEXFILE) : $(SUBTEXFILES) $(BIBFILES)
 	"-dMonoImageFilter=/FlateEncode" \
 	"-dDownsampleGrayImages=false" \
 	"-dDownsampleColorImages=false" \
-	$< template.pdf
+	$< $(DOCUMENT).pdf
 #                               $(PDFLATEX) $<
 
 # cleans anything that can be re-generated automatically, plus emacs backups
-clean: 
+clean:
 				rm -f *.aux *.log *.bbl *.blg *.brf *.cb *.ind *.idx *.ilg	\
-				*.inx *.toc *.out $(DVIFILES) $(PSFILES) template.pdf *~
+				*.inx *.toc *.out $(DVIFILES) $(PSFILES) $(DOCUMENT).pdf *~
 
 .PHONY : all pdf ps dvi clean $(MAINTEXFILE)
