@@ -1,4 +1,4 @@
-\section{Stochastic Particle Tracing using Particle Filtering (TODO: update equation numbers.)}
+\section{Stochastic Particle Tracing using Particle Filtering}
 
 As presented above, the particle tracing result of a given seed position $x_0$ for the distribution-based data $\mathcal{H}$ can be represented as a pdf $p({v_{0:n}}|{\lambda_{0:n}})$ over the trace domain $\Omega_{x_0}$, which is given by equation (8). However, $p({v_{0:n}}|{\lambda_{0:n}})$ is high-dimensional, non-standard, and only known up to a proportionality constant, which makes it infeasible to be evaluated in closed-form. Therefore, a Monte Carlo based method needs to be used to approximate the target distribution. In this work, we make use of the particle filtering technique, which is one of the class of methods known as the Sequential Monte Carlo methods, to estimate the target pdf iteratively.
 
@@ -26,11 +26,11 @@ where
 \begin{equation}
   p(v_t|v_{t-1},\lambda_t) = \frac{{p({\lambda_t}|{v_t})p({v_t}|{v_{t - 1}})}}{{p({\lambda_t}|{\lambda_{0:t - 1}})}}
 \end{equation}
-Since directly drawing vectors from $p(v_t|v_{t-1},\lambda_t)$ is difficult, we make use of an alternative density function $q({v_t}|{v_{t - 1}},{\lambda_t})$ which is so-call the importance function presented above. From the importance function, vector directions $v_t$ can be obtained, therefore the weights can be updated according to equation (16). Theoretically, the importance function can be any distribution for the vector direction $v_t$. However, a bad choice of the importance function may produce vector directions which have low probability in the target distribution. Hence, the choice of the importance function will influence the performance of the particle filtering algorithm significantly, which will be detailed in the next section. In order to iteratively update the weights on-line, the importance function is chosen to factorize such that:
+Since directly drawing vectors from $p(v_t|v_{t-1},\lambda_t)$ is difficult, we make use of an alternative density function $q({v_t}|{v_{t - 1}},{\lambda_t})$ which is so-call the importance function presented above. From the importance function, vector directions $v_t$ can be obtained, therefore the weights can be updated according to equation (13). Theoretically, the importance function can be any distribution for the vector direction $v_t$. However, a bad choice of the importance function may produce vector directions which have low probability in the target distribution. Hence, the choice of the importance function will influence the performance of the particle filtering algorithm significantly, which will be detailed in the next section. In order to iteratively update the weights on-line, the importance function is chosen to factorize such that:
 \begin{equation}
   q({v_{0:t}}|{\lambda_{0:t}}) = q({v_{0:t - 1}}|{\lambda_{0:t - 1}})q({v_t}|{v_{t - 1}},{\lambda_t})
 \end{equation}
-After getting random vector directions according to the importance density $q({v_t}|{v_{t - 1}},{\lambda_t})$, the weights $\{w_t^i\} _{i = 1}^{{N_s}}$ of traces is updated based on $\{w_{t-1}^i\} _{i = 1}^{{N_s}}$. By substituting (17), (19) into (16), we can get the equation to update the weight:
+After getting random vector directions according to the importance density $q({v_t}|{v_{t - 1}},{\lambda_t})$, the weights $\{w_t^i\} _{i = 1}^{{N_s}}$ of traces is updated based on $\{w_{t-1}^i\} _{i = 1}^{{N_s}}$. By substituting (14), (16) into (13), we can get the equation to update the weight:
 \begin{equation}
   w_t^i = w_{t - 1}^i\frac{{p({\lambda_t}|v_t^i)p(v_t^i|v_{t - 1}^i)}}{{q(v_t^i|v_{t - 1}^i,{\lambda_t})p({\lambda_t}|{\lambda_{0:t - 1}})}}
 \end{equation}
@@ -68,11 +68,11 @@ Our stochastic particle tracing algorithm is summarize in Algorithm~\ref{algo:pf
 \State Let $x_0$ be a given seed position, $n$ be the number of steps, $N_s$ be the number of samples.
 \For {$t=0:n$}
 \For {$i=1:N_s$}
-\State Sample $v_t^i$ at position $x_t$ according to (14)
-\State Compute weight $w_t^i$ according to (13), (14), (15), and (22)
+\State Sample $v_t^i$ at position $x_t$ according to ${\lambda_t}$
+\State Compute weight $w_t^i$ according to (11), (12), and (19)
 \EndFor
-\State Normalize the weights $\{w_t^i\}_{i=1}^{N_s}$ according to (21)
-\State Calculate $N_{eff}$ using (23)
+\State Normalize the weights $\{w_t^i\}_{i=1}^{N_s}$ according to (18)
+\State Calculate $N_{eff}$ using (20)
 \If {$N_{eff} < N_t$}
 \State Resample $\{ v_{0:t}^i,w_t^i\} _{i = 1}^{{N_s}}$ to obtain $N_s$ equally-weighted particles $\{ \hat{v}_{0:t}^i,\frac{1}{N_s}\} _{i = 1}^{{N_s}}$
 \EndIf

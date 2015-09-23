@@ -98,3 +98,8 @@ In this work, the mean direction $\mu$ of the prior density is given by the prev
 \end{equation}
 
 \subsubsection{Observation Density}
+
+Since the distribution-based vector field contains uncertainty, which is encoded in the local distributions. We make use of the observation density to characterize this uncertainty, which defines a likelihood function that measures how observations match the current prior model. At step $t$, for a given vector direction $v_t$, the observation density $p({\lambda_t}|{v_t})$ is a conditional density representing how likely the observation $\lambda_t$ measured at position $x_t$ will happen based on the given vector $v_t$. According to the observation $\lambda_t$, the observation density $p({\lambda_t}|{v_t})$ is estimated based on the method presented by Friman et al. in~\cite{frimanTMI06}. We first model the observation matching perfectly to the current state $v_t$ as a distribution $\mu_t$ where the probability of $v_t$ equals to $1$. Then treat $\lambda_t$ as a histogram and let the probability $\lambda_t(i)$ of bin $i$ be an uncertain observation of $\mu_t(i)$, i.e. $\log{\mu_t(i)}=\log{\lambda_t(i)}+\epsilon$. The noise $\epsilon$ can be modeled as additive Gaussian distribution~\cite{Basser1994,Salvador05}, such as $\epsilon \sim N(0,{\sigma ^2}/{\mu _t}{(i)^2})$. Then the observation density, or the likelihood, can be written as
+\begin{equation}
+  p({\lambda_t}|{v_t}) = \prod\limits_{i = 0}^N {\frac{{{\mu _t}(i)}}{{\sqrt {2\pi {\sigma ^2}} }}} {e^{ - \frac{{{\mu _t}{{(i)}^2}}}{{{2\sigma ^2}}}{{(\log{{\lambda _t}(i)} - \log{{\mu _t}(i)})}^2}}}
+\end{equation}
