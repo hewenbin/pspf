@@ -8,14 +8,7 @@ Single streamline $L$ originating from position ${x_0}$ can be modeled as $L = \
 \begin{equation}
   {x_{t + 1}} = {x_t} + {v_t}\Delta t
 \end{equation}
-where ${v_t}$ and $\Delta t$ refer to the vector direction and the step size at step $t$. Since we focus on generating streamlines from steady vector fields in this work, it is safe to ignore the magnitude of the vectors. And if we set the step size $\Delta t$ as a constant, we can represent the streamline by a sequence of vector directions ${L = v_{0:n}}$, since the streamline trajectory only depends on the propagation directions $v_{0:n}$. Figure~\ref{trajectory} depicts an example of the streamline trajectory model.
-
-\begin{figure}[htb]
-  \centering
-  \includegraphics[width=2in]{../figures/trajectory.eps}
-  \caption{An example streamline generated from an uncertain vector field is modeled as a sequence of vectors.}
-  \label{trajectory}
-\end{figure}
+where ${v_t}$ and $\Delta t$ refer to the vector direction and the step size at step $t$. Since we focus on generating streamlines from steady vector fields in this work, it is safe to ignore the magnitude of the vectors. And if we set the step size $\Delta t$ as a constant, we can represent the streamline by a sequence of vector directions ${L = v_{0:n}}$, since the streamline trajectory only depends on the propagation directions $v_{0:n}$.
 
 For the uncertain vector fields, there is no unique streamline $v_{0:n}$ for a given starting point $x_0$. Let $\Omega_{x_0}$ be the set of all possible streamlines which originate from $x_0$ given the uncertain data $\mathcal{H}$, we then can define a probability density function (pdf) over the path space, which is:
 \begin{equation}
@@ -75,17 +68,17 @@ The parameter $\kappa$ defined in range $\kappa \ge 0$ is used to control the co
   \centering
   \begin{subfigure}[b]{0.16\textwidth}
     \centering
-    \includegraphics[width=0.9in]{../figures/vf_100.eps}
+    \includegraphics[width=0.8in]{../figures/vf_100.eps}
     \caption{$\kappa=100$}
   \end{subfigure}~
   \begin{subfigure}[b]{0.16\textwidth}
     \centering
-    \includegraphics[width=0.9in]{../figures/vf_10.eps}
+    \includegraphics[width=0.8in]{../figures/vf_10.eps}
     \caption{$\kappa=10$}
   \end{subfigure}~
   \begin{subfigure}[b]{0.16\textwidth}
     \centering
-    \includegraphics[width=0.9in]{../figures/vf_1.eps}
+    \includegraphics[width=0.8in]{../figures/vf_1.eps}
     \caption{$\kappa=1$}
   \end{subfigure}
   \caption{Points sampled from three von Mises-Fisher distributions on $2$-dimensional spheres with different value of $\kappa$. The mean directions are shown as arrows.}
