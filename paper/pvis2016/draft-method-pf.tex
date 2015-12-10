@@ -1,6 +1,6 @@
 \section{Stochastic Particle Tracing using Particle Filtering}
 
-As presented above, the particle tracing result of a given seed position $x_0$ for the distribution-based data $\mathcal{H}$ can be represented as a pdf $p({v_{0:n}}|{\lambda_{0:n}})$ over the trace domain $\Omega_{x_0}$, which is given by equation (8). However, $p({v_{0:n}}|{\lambda_{0:n}})$ is high-dimensional, non-standard, and only known up to a proportionality constant, which makes it infeasible to be evaluated in closed-form. Therefore, a Monte Carlo based method needs to be used to approximate the target distribution. In this work, we make use of the particle filtering technique, which is one of the class of methods known as the Sequential Monte Carlo methods, to estimate the target pdf iteratively.
+As presented above, the particle tracing result of a given seed position $x_0$ for the distribution-based data $\mathcal{H}$ can be represented as a pdf $p({v_{0:n}}|{\lambda_{0:n}})$ over the trace domain $\Omega_{x_0}$, which is given by equation (8). However, $p({v_{0:n}}|{\lambda_{0:n}})$ is high-dimensional, non-standard, and only known up to a proportionality constant, which makes it infeasible to be evaluated in closed-form. Therefore, a Monte Carlo based method needs to be used to approximate the target distribution. In this case, particle filtering as one of Sequential Monte Carlo methods is suitable to approximate the target distribution in iterations.
 
 \subsection{Posterior Approximation with Properly Weighted Traces}
 
@@ -11,14 +11,14 @@ As presented above, the particle tracing result of a given seed position $x_0$ f
   \label{importance_sampling}
 \end{figure}
 
-In order to work with the complicated target posterior density $p({v_{0:n}}|{\lambda_{0:n}})$, a more convenient representation is needed to approximate it. By applying the particle filtering method, the target posterior density can be represented by a set of properly weighted traces, which are denoted as $\{ v_{0:n}^i,w_n^i\} _{i = 1}^{{N_s}}$, where $N_s$ is the number of samples and $ w_n^i,i = 0,...,{N_s} $ are the associated weights. Therefore, we can estimate some statistical properties, for example the mean, variance, and maximum likelihood of the target posterior density from the sample traces. Compare to the non-weighted samples used by the conventional Monte Carlo method, weighted samples can represent the target distribution more efficiently. An comparison between weighted and non-weighted samples is illustrated in Figure~\ref{importance_sampling}. A common way of drawing properly weighted samples from the target distribution is to use importance sampling, which samples from an trivial distribution $q({v_{0:n}}|{\lambda_{0:n}})$ called the importance function and assign a weight to each of the random samples according to
+In order to work with the complicated target posterior density $p({v_{0:n}}|{\lambda_{0:n}})$, a more convenient representation is needed to approximate it. By applying the particle filtering method, the target posterior density can be represented by a set of properly weighted traces, which are denoted as $\{ v_{0:n}^i,w_n^i\} _{i = 1}^{{N_s}}$, where $N_s$ is the number of samples and $ w_n^i,i = 0,...,{N_s} $ are the associated weights. Therefore, we can estimate some statistical properties, for example the mean, variance, and maximum likelihood of the target posterior density from the sample traces. Compared to the non-weighted samples used by the conventional Monte Carlo method, weighted samples can represent the target distribution more efficiently. A comparison between weighted and non-weighted samples is illustrated in Figure~\ref{importance_sampling}. A common way of drawing properly weighted samples from the target distribution is to use importance sampling, which samples from a trivial distribution $q({v_{0:n}}|{\lambda_{0:n}})$ called the importance function and assign a weight to each of the random samples according to
 \begin{equation}
   w_n = \frac{{p({v_{0:n}}|{\lambda_{0:n}})}}{{q({v_{0:n}}|{\lambda_{0:n}})}}
 \end{equation}
 
 \subsection{Sequential Build-Up}
 
-Since the dimension of the target posterior density increases as the number of steps in the particle grows, which makes it difficult to directly obtain the final sample traces with a given step number $n$. By applying particle filtering we smoothly approaching the final probability density by building up the sample traces sequentially with increasing dimensions. To do so, we put ${N_s}$ particles at the seed position $x_0$ and update them iteratively. At each iteration $t$, we have a set of properly weighted samples $\{ v_{0:t-1}^i,w_{t-1}^i\} _{i = 1}^{{N_s}}$ which represents the probability density $p({v_{0:t-1}}|{\lambda_{0:t-1}})$, then each sample can be updated to step $t$ according to the recursive form of the posterior density $p({v_{0:t}}|{\lambda_{0:t}})$, which can be written as:
+Since the dimension of the target posterior density increases as the number of propagation steps in the particle tracing grows, which makes it difficult to directly obtain the final sample traces with a given step number $n$. By applying particle filtering we smoothly approach the final probability density by building up the sample traces sequentially. To do so, we put ${N_s}$ particles at the seed position $x_0$ and update them iteratively. At each iteration $t$, we have a set of properly weighted samples $\{ v_{0:t-1}^i,w_{t-1}^i\} _{i = 1}^{{N_s}}$ which represents the probability density $p({v_{0:t-1}}|{\lambda_{0:t-1}})$, then each sample can be updated to step $t$ according to the recursive form of the posterior density $p({v_{0:t}}|{\lambda_{0:t}})$, which can be written as:
 \begin{equation}
   p({v_{0:t}}|{\lambda_{0:t}}) = p({v_{0:t - 1}}|{\lambda_{0:t - 1}})p(v_t|v_{t-1},\lambda_t)
 \end{equation}
@@ -26,7 +26,7 @@ where
 \begin{equation}
   p(v_t|v_{t-1},\lambda_t) = \frac{{p({\lambda_t}|{v_t})p({v_t}|{v_{t - 1}})}}{{p({\lambda_t}|{\lambda_{0:t - 1}})}}
 \end{equation}
-Since directly drawing vectors from $p(v_t|v_{t-1},\lambda_t)$ is difficult, we make use of an alternative density function $q({v_t}|{v_{t - 1}},{\lambda_t})$ which is so-call the importance function presented above. From the importance function, vector directions $v_t$ can be obtained, therefore the weights can be updated according to equation (13). Theoretically, the importance function can be any distribution for the vector direction $v_t$. However, a bad choice of the importance function may produce vector directions which have low probability in the target distribution. Hence, the choice of the importance function will influence the performance of the particle filtering algorithm significantly, which will be detailed in the next section. In order to iteratively update the weights on-line, the importance function is chosen to factorize such that:
+Since directly sampling vectors from $p(v_t|v_{t-1},\lambda_t)$ is difficult, we make use of an alternative density function $q({v_t}|{v_{t - 1}},{\lambda_t})$ which is so-call the importance function presented above. From the importance function, vector directions $v_t$ can be obtained, therefore the weights can be updated according to equation (13). Theoretically, the importance function can be any distribution for the vector direction $v_t$. However, a bad choice of the importance function may produce vector directions which have low probability in the target distribution. Hence, the choice of the importance function will influence the performance of the particle filtering algorithm significantly, which will be detailed in the next section. In order to iteratively update the weights on-line, the importance function is chosen to factorize such that:
 \begin{equation}
   q({v_{0:t}}|{\lambda_{0:t}}) = q({v_{0:t - 1}}|{\lambda_{0:t - 1}})q({v_t}|{v_{t - 1}},{\lambda_t})
 \end{equation}
@@ -43,9 +43,9 @@ the normalizing constant ${p({\lambda_t}|{\lambda_{0:t - 1}})}$ can be ignored. 
   w_t^i \propto w_{t - 1}^i\frac{{p({\lambda_t}|v_t^i)p(v_t^i|v_{t - 1}^i)}}{{q(v_t^i|v_{t - 1}^i,{\lambda_t})}}
 \end{equation}
 
-The results provided by the particle filtering algorithm for a given seed position is a set of weighted traces which approximate the posterior probability distribution of the possible traces. We directly render them to see the uncertainty of the particle tracing process. With respect to the goal of visualizing the global phenomenon of the vector fields, streamlines originating from different seed positions need to be visualized together, which make it inappropriate to show all the sample traces for a given seed position all the time. To solve this problem, we extract the trace with highest probability based on the posterior density function and visualize all the optimal traces together. The optimal trace is chosen by maximum a posteriori probability (MAP) estimation, which is the trace with the maximal importance weight.
+The results provided by the particle filtering algorithm for a given seed position is a set of weighted traces which approximate the posterior probability distribution of the possible traces. We directly render them to see the uncertainty of the particle tracing process. With respect to the goal of visualizing the global phenomenon of the vector fields, streamlines originating from different seed positions need to be visualized together, which make it inappropriate to show all the sample traces for a given seed position all the time. To solve this problem, we extract the trace with highest probability based on the posterior density function and visualize all the most likely traces together. The most likely trace is chosen by maximum a posteriori probability (MAP) estimation, which is the trace with the maximal importance weight.
 
-\subsection{The Degeneracy Problem}
+\subsection{Resampling and Choice of Importance Function}
 
 A common issue with the particle filtering algorithm is the degeneracy problem, which is that after several iterations, some samples will have extremely small weights. This means that the contribution of those samples to the posterior distribution is negligible. A reasonable measurement of degeneracy is the effective sample size $N_{eff}$ introduced in~\cite{Liu98sequentialmonte}, which can be estimated by
 \begin{equation}
@@ -59,7 +59,7 @@ where $w_t^i$ is the normalized weight. The value of $N_{eff}$ is between $1$ an
 
 \subsection{Algorithm Summary}
 
-Our stochastic particle tracing algorithm is summarize in Algorithm~\ref{algo:pf}.
+Our stochastic particle tracing algorithm is summarized in Algorithm~\ref{algo:pf}.
 
 \begin{algorithm}[h]
 \caption{Streamline Estimation with Particle Filtering} \label{algo:pf}
