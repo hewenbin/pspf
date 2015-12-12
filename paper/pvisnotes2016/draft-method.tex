@@ -1,6 +1,6 @@
 \section{Probabilistic Particle Tracing Model}
 
-In order to analyze the uncertain flow field by particle tracing, in this section we introduce our probability-based particle tracing model. First, we describe the global modeling of streamlines and how to estimate the trace distributions for a given distribution data. Then local distributions used by the global model are detailed.
+In order to analyze the uncertain flow field by particle tracing, in this section we introduce our probability-based particle tracing model. First, we describe the global modeling of streamlines and how to estimate the trace distributions for a given uncertain data. Then local distributions used by the global model are detailed.
 
 \subsection{Global Modeling}
 
@@ -44,7 +44,7 @@ By substituting (5) and (7) into (3), the posterior density $p({v_{0:n}}|{\lambd
   p({v_{0:n}}|{\lambda_{0:n}}) = \frac{{p({v_0})\prod\limits_{t = 1}^n {p({v_t}|{v_{t - 1}})} \prod\limits_{t = 0}^n {p({\lambda_t}|{v_t})} }}{{p({\lambda_{0:n}})}}
 \end{equation}
 
-Since $p({v_{0:n}}|{\lambda_{0:n}})$ is high-dimensional, non-standard, and only known up to a proportionality constant, which makes it infeasible to be evaluated in closed-form. Therefore, a Monte Carlo based method needs to be used to approximate the target distribution. In this case, particle filtering~\cite{doucet2001sequential} as one of Sequential Monte Carlo methods is suitable to approximate the target distribution in iterations. We first put a number of weighted particles at the seed position and update them iteratively. At each iteration, the vector directions which the particles will propagate along with are sampled from an importance function. Then the weight of each particle can be updated based on the importance sampling. Furthermore, the particles can be resampled based on their weights. In the end, a set of weighted particle tracing are obtained to represented the target posterior distribution, from which the most likely trace can be chosen by maximum a posteriori estimation (MAP) estimation.
+Since $p({v_{0:n}}|{\lambda_{0:n}})$ is high-dimensional, non-standard, and only known up to a proportionality constant, which makes it infeasible to be evaluated in closed-form. Therefore, a Monte Carlo based method needs to be used to approximate the target distribution. In this case, particle filtering~\cite{doucet2001sequential} as one of Sequential Monte Carlo methods is suitable to approximate the target distribution in iterations. We first put a number of weighted particles at the seed position and update them iteratively. At each iteration, the vector directions which the particles will propagate along with are sampled from an importance function. Then the weight of each particle can be updated based on the importance sampling. Furthermore, the particles can be resampled based on their weights. In the end, a set of weighted particle tracing are obtained to represent the target posterior distribution, from which the most likely trace can be chosen by maximum a posteriori estimation (MAP) estimation.
 
 \subsection{Local Modeling}
 
@@ -62,7 +62,7 @@ where the normalization constant $C_{d}(\kappa)\,$ is
 \end{equation}
 in which $I_{d/2-1}$ denotes the modified Bessel function of the first kind and order $d/2-1$.
 
-The parameter $\kappa$ defined in range $\kappa \ge 0$ is used to control the concentration of the distribution around the mean direction $\mu$. The distribution with higher concentration will have a greater $\kappa$ value. Figure~\ref{fisher} gives examples of points sampled from 2-dimensional von Mises-Fisher distributions with different $\kappa$.
+The parameter $\kappa$ is used to control the concentration of the distribution around the mean direction $\mu$. Figure~\ref{fisher} gives examples of points sampled from 2-dimensional von Mises-Fisher distributions with different $\kappa$.
 
 \begin{figure}[htb]
   \centering
