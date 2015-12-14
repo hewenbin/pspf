@@ -4,7 +4,7 @@ In order to analyze the uncertain flow field by particle tracing, in this sectio
 
 \subsection{Global Modeling}
 
-Single streamline $L$ originating from position ${x_0}$ can be modeled as $L = \{ {x_0},{x_1},...,{x_n}\} = {x_{0:n}}$, where $x_t$ refers to a position in $\mathrm{R}^d$. As mentioned by Otto et al. in~\cite{Otto10a, Otto11a}, conventional streamline integration methods such as RK4 are not well defined for uncertain vector fields, since there is no unique vector direction at a location ${x_t}$. Therefore, as with most previous methods~\cite{Otto10a, Otto11a}, we make use of the Euler integration model in this paper:
+A single streamline $L$ originating from position ${x_0}$ can be modeled as $L = \{ {x_0},{x_1},...,{x_n}\} = {x_{0:n}}$, where $x_t$ refers to a position in $\mathrm{R}^d$. As mentioned by Otto et al. in~\cite{Otto10a, Otto11a}, conventional streamline integration methods such as RK4 are not well defined for uncertain vector fields, since there is no unique vector direction at a location ${x_t}$. Therefore, as with most previous methods~\cite{Otto10a, Otto11a}, we make use of the Euler integration model in this paper:
 \begin{equation}
   {x_{t + 1}} = {x_t} + {v_t}\Delta t
 \end{equation}
@@ -48,7 +48,7 @@ Since $p({v_{0:n}}|{\lambda_{0:n}})$ is high-dimensional, non-standard, and only
 
 \subsection{Local Modeling}
 
-In this section, we will elaborate how to model and estimate the local densities in detail.
+Based on the particle filtering algorithm, the prior density $p({v_t}|{v_{t - 1}})$, the observation density $p({\lambda_t}|{v_t})$, and an importance function need to be modeled and estimated. In this section, we will elaborate how to model and estimate these local densities in detail.
 
 \noindent\textbf{Prior Density.} As mentioned before, prior density is used to characterize the correlation between two adjacent vector directions. In this work, a prior density which prefers to continue in the previous direction and gives decreasing probability for sharper turns is used. As presented by Zhang et al. in~\cite{Zhang20095}, the von Mises-Fisher distribution~\cite{fisher} has been selected as the prior density due to its mathematical simplicity and tractability.
 
@@ -85,7 +85,7 @@ The parameter $\kappa$ is used to control the concentration of the distribution 
   \label{fisher}
 \end{figure}
 
-In this work, the mean direction $\mu$ of the prior density is given by the previous vector direction ${v_{t - 1}}$. The concentration parameter $\kappa$ is given manually as a constant value.
+In this work, the mean direction $\mu$ of the prior density is given by the previous vector direction ${v_{t - 1}}$. The concentration parameter $\kappa$ is given manually as a constant value, in this work a $\kappa = 60$ is used. For more turbulent flow fields, a larger $\kappa$ can be used.
 
 \noindent\textbf{Observation Density.} We make use of the observation density to characterize local uncertainties, which defines a likelihood function that measures how observations match the current prior model. At step $t$, for a given vector direction $v_t$, the observation density $p({\lambda_t}|{v_t})$ is a conditional density representing how likely the observation $\lambda_t$ measured at position $x_t$ will happen based on the given vector $v_t$. According to the observation $\lambda_t$, the observation density $p({\lambda_t}|{v_t})$ is estimated based on the method presented by Friman et al. in~\cite{frimanTMI06}. We first model the observation matching perfectly to the current state $v_t$ as a distribution $\mu_t$ where the probability of $v_t$ equals to $1$. Then treat $\lambda_t$ as a histogram and let the probability $\lambda_t(i)$ of bin $i$ be an uncertain observation of $\mu_t(i)$, i.e. $\log{\mu_t(i)}=\log{\lambda_t(i)}+\epsilon$. The noise $\epsilon$ can be modeled as additive Gaussian distribution~\cite{Basser1994,Salvador05}, such as $\epsilon \sim N(0,{\sigma ^2}/{\mu _t}{(i)^2})$. Then the observation density, or the likelihood, can be written as
 \begin{equation}
