@@ -10,7 +10,7 @@ A single streamline $L$ originating from position ${x_0}$ can be modeled as $L =
 \end{equation}
 where ${v_t}$ and $\Delta t$ refer to the vector direction and the step size at step $t$. Since we focus on generating streamlines from steady vector fields in this work, it is safe to ignore the magnitude of the vectors. And if we set the step size $\Delta t$ as a constant, we can represent the streamline by a sequence of vector directions ${L = v_{0:n}}$, since the streamline trajectory only depends on the propagation directions $v_{0:n}$.
 
-For the uncertain vector fields, there is no unique streamline $v_{0:n}$ for a given starting point $x_0$. Let $\Omega_{x_0}$ be the set of all possible streamlines which originate from $x_0$ given the uncertain data $\mathcal{H}$, we then can define a probability density function (pdf) over the path space, which is:
+For the uncertain vector fields, there is no unique streamline $v_{0:n}$ for a given starting point $x_0$. For all possible streamlines which originate from $x_0$ given the uncertain data $\mathcal{H}$, we can define a probability density function (pdf) over the path space, which is:
 \begin{equation}
   p(v_{0:n}|\mathcal{H})
 \end{equation}
