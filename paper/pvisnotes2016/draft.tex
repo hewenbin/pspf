@@ -46,6 +46,20 @@
 
 \newcommand{\vcenterbox}[1]{\begingroup\setbox0=\hbox{#1}       \parbox{\wd0}{\box0}\endgroup}
 
+\setlength{\floatsep}{0.1in} %  space left between floats.
+
+\setlength{\textfloatsep}{.15in} %space between last top float or first bottom float and the text.
+
+\setlength{\dblfloatsep}{.15in} %dbl: space between last top float or first bottom float and the text.
+
+%%\setlength{\dbltextfloatsep}{.1in} %  dbl: space left between floats.
+
+%%\setlength{\abovecaptionskip}{.1in}
+
+%%\setlength{\belowcaptionskip}{.1in}
+
+%%\setlength{\intextsep}{0.1in} % space left on top and bottom of an in-text float.
+
 %% If you are submitting a paper to a conference for review with a double
 %% blind reviewing process, please replace the value ``0'' below with your
 %% OnlineID. Otherwise, you may safely leave it at ``0''.
@@ -71,11 +85,11 @@
 %%\affiliation{\scriptsize Allied Widgets Research}
 
 %% Author and Affiliation (multiple authors with single affiliations).
-\author{Wenbin He\thanks{e-mail: he.495@osu.edu} %
-\and Chun-Ming Chen\thanks{e-mail: chen.1701@osu.edu} %
-\and Xiaotong Liu\thanks{e-mail: liu.1952@osu.edu}
-\and Han-Wei Shen\thanks{e-mail: hwshen@cse.ohio-state.edu}}
-\affiliation{\scriptsize The Ohio State University}
+\author{Wenbin He %
+\and Chun-Ming Chen %
+\and Xiaotong Liu
+\and Han-Wei Shen}
+\affiliation{\scriptsize The Ohio State University\thanks{e-mail: \{he.495,chen.1701,liu.1952,shen.94\}@osu.edu}}
 
 % %% Author and Affiliation (multiple authors with multiple affiliations)
 % \author{Roy G. Biv\thanks{e-mail: roy.g.biv@aol.com}\\ %
@@ -125,11 +139,11 @@ Streamline-based techniques play an important role in visualizing and analyzing 
 
 \maketitle
 
-Uncertainty is introduced in scientific data sets from various sources. As the computation power and storage capacity of modern computers continue to grow, simulations can now produce data at very high spatial and temporal resolutions, which makes it necessary to choose a representation for analysis at a reduced size. Several data reduction techniques have been introduced to solve big data problems~\cite{6378985, 7156380, conf/ldav/LiuLBP12, DBLP:conf/ldav/ThompsonLBBGPP11}, which inevitably introduce uncertainty into the resulting data. And more recently, ensembles of simulations and stochastic simulations are becoming increasingly popular, which produce data with uncertainty in nature. Further more, uncertainty may also come from errors produced by numerical simulations or instrument measurements. Hence, analyzing and visualizing uncertainty is becoming increasingly indispensable to the understanding of scientific data.
+Uncertainty is introduced in scientific data sets from various sources. As the computation power and storage capacity of modern computers continue to grow, simulations can now produce data at very high spatial and temporal resolutions, which makes it necessary to choose a representation for analysis at a reduced size. Several data reduction techniques have been introduced to solve big data problems~\cite{6378985, 7156380, conf/ldav/LiuLBP12, DBLP:conf/ldav/ThompsonLBBGPP11}, which inevitably introduce uncertainty into the resulting data. More recently, ensembles of simulations are becoming increasingly popular, which produce data with uncertainty in nature. Hence, analyzing and visualizing uncertainty is becoming increasingly indispensable to the understanding of scientific data.
 
 In many scientific and engineering disciplines, analysis and visualization of vector fields continue to play an important role. To date, various techniques have been developed, among which streamline based techniques play a key role in steady vector fields exploration. Although a variety of methods have been introduced to analyze and visualize uncertain vector fields, the streamline computation for uncertain vector fields is still a challenging problem. Generating streamlines that have a higher likelihood to occur in an uncertain vector field is non-trivial because the uncertainty is propagated and accumulated along the streamlines. Previously, researchers have used the Monte Carlo approach to integrate probabilistic particle traces, such as the work presented by Otto et al.~\cite{Otto10a, Otto11a}. Although the Monte Carlo method is easy to understand and implement, it suffers from several drawbacks. First, it is sensitive to local uncertainties in vector fields. When a particle passes through a highly uncertain region, the results of the trajectory estimation can be poor. Second, the spatial coherence of vector directions was not considered. As a result, the particles can change their directions abruptly along their trajectories.
 
-In this paper, we propose a novel Bayesian approach for probabilistic particle tracing. Our approach is inspired by the following observations: Since physical phenomena often have a continuous nature, vector directions in a flow field are typically correlated in the spatial domain. Hence, the correlation between vector directions along a streamline, which is generated from such steady vector fields, should be considered. In order to take advantage of these observations, we formulate the probabilistic particle tracing problem by a state space hidden Markov model. We model the probability that a particle will encounter from one vector direction to the next as the prior density to characterize the correlation between vector directions of adjacent integration steps, and use the observation density from the data to characterize the uncertainty of local vector directions. Based on the Bayesian model, we compute the posterior distribution of streamlines to estimate the trajectories that are more likely for a particle to follow. Since it is unlikely that the prior or observation densities derived from real world data sets are Gaussian, we make use of the particle filtering~\cite{doucet2001sequential} technique in this work. In the end, we render the estimated uncertain streamline bundles and search for the most likely trajectory within. The contribution of the work is that we introduce a Bayesian model to improve the quality of uncertain particle tracing. Through experiments on different types of vector fields, the proposed method produces streamline bundles of higher likelihood and hence more accurate paths.
+In this paper, we propose a novel Bayesian approach for probabilistic particle tracing. Our approach is inspired by the following observations: Since physical phenomena often have a continuous nature, vector directions in a flow field are typically correlated in the spatial domain. Hence, the correlation between vector directions along a streamline should be considered. In order to take advantage of these observations, we formulate the probabilistic particle tracing problem by a state space hidden Markov model. We model the probability that a particle will encounter from one direction to the next as the prior density to characterize the correlation between vector directions of adjacent integration steps, and use the observation density from the data to characterize the uncertainty of local vector directions. Based on the Bayesian model, we compute the posterior distribution of streamlines to estimate the trajectories that are more likely for a particle to follow. Since it is unlikely that the prior or observation densities derived from real world data sets are Gaussian, we make use of the particle filtering~\cite{doucet2001sequential} technique in this work. In the end, we render the estimated uncertain streamlines and search for the most likely trajectory within. The contribution of the work is that we introduce a Bayesian model to improve the quality of uncertain particle tracing. Through experiments on different types of vector fields, the proposed method produces streamlines of higher likelihood and hence more accurate paths.
 
 %% \section{Introduction}
 
@@ -141,10 +155,9 @@ In this paper, we propose a novel Bayesian approach for probabilistic particle t
 
 \input{draft-con}
 
-% %% if specified like this the section will be ommitted in review mode
-% \acknowledgements{
-% The authors wish to thank A, B, C. This work was supported in part by
-% a grant from XYZ.}
+%% if specified like this the section will be ommitted in review mode
+\acknowledgements{
+This work was supported in part by NSF grants IIS-1250752, IIS-1065025, and US Department of Energy grants DE-SC0007444, DE-DC0012495, program manager Lucy Nowell.}
 
 \bibliographystyle{abbrv}
 %%use following if all content of bibtex file should be shown
